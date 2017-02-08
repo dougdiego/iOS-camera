@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KYh-xQ-USb">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Camera View Controller-->
+        <scene sceneID="Wuh-5V-jpR">
+            <objects>
+                <viewController id="KYh-xQ-USb" customClass="CameraViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="92q-P7-WNu"/>
+                        <viewControllerLayoutGuide type="bottom" id="hwT-cB-mbK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vm4-eS-ZwZ" customClass="CameraPreviewView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTf-Ko-6Nh" userLabel="Photo Button" customClass="CameraButton" customModule="Camera" customModuleProvider="target">
+                                <rect key="frame" x="154" y="581" width="66" height="66"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="66" id="0LP-xy-VbM"/>
+                                    <constraint firstAttribute="width" constant="66" id="55m-bY-zbu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Photo"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="capturePhoto:" destination="KYh-xQ-USb" eventType="touchUpInside" id="lFu-gA-zIk"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="hwT-cB-mbK" firstAttribute="top" secondItem="lTf-Ko-6Nh" secondAttribute="bottom" constant="20" id="2LD-Te-dSy"/>
+                            <constraint firstItem="lTf-Ko-6Nh" firstAttribute="centerX" secondItem="vm4-eS-ZwZ" secondAttribute="centerX" id="GlH-AM-dL4"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="photoButton" destination="lTf-Ko-6Nh" id="hzD-kY-icI"/>
+                        <outlet property="previewView" destination="vm4-eS-ZwZ" id="6fG-tD-nqx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ubT-co-eZ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137" y="799"/>
+        </scene>
+    </scenes>
+</document>
