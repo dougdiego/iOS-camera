@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="KYh-xQ-USb">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,11 +18,11 @@
                         <viewControllerLayoutGuide type="bottom" id="hwT-cB-mbK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vm4-eS-ZwZ" customClass="CameraPreviewView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTf-Ko-6Nh" userLabel="Photo Button" customClass="CameraButton" customModule="Camera" customModuleProvider="target">
-                                <rect key="frame" x="154" y="581" width="66" height="66"/>
+                                <rect key="frame" x="127" y="394" width="66" height="66"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="66" id="0LP-xy-VbM"/>
                                     <constraint firstAttribute="width" constant="66" id="55m-bY-zbu"/>
@@ -38,16 +38,30 @@
                                     <action selector="capturePhoto:" destination="KYh-xQ-USb" eventType="touchUpInside" id="lFu-gA-zIk"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ij-gr-hUB">
+                                <rect key="frame" x="264" y="407" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="4Sf-Ji-MYO"/>
+                                    <constraint firstAttribute="width" constant="40" id="vfb-Xj-MbV"/>
+                                </constraints>
+                                <state key="normal" image="switch_camera"/>
+                                <connections>
+                                    <action selector="switchCamera:" destination="KYh-xQ-USb" eventType="touchUpInside" id="4oa-oQ-1oz"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hwT-cB-mbK" firstAttribute="top" secondItem="lTf-Ko-6Nh" secondAttribute="bottom" constant="20" id="2LD-Te-dSy"/>
+                            <constraint firstAttribute="trailing" secondItem="2Ij-gr-hUB" secondAttribute="trailing" constant="16" id="8Og-eC-kia"/>
                             <constraint firstItem="lTf-Ko-6Nh" firstAttribute="centerX" secondItem="vm4-eS-ZwZ" secondAttribute="centerX" id="GlH-AM-dL4"/>
+                            <constraint firstItem="2Ij-gr-hUB" firstAttribute="centerY" secondItem="lTf-Ko-6Nh" secondAttribute="centerY" id="rNY-9A-ioh"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="photoButton" destination="lTf-Ko-6Nh" id="hzD-kY-icI"/>
                         <outlet property="previewView" destination="vm4-eS-ZwZ" id="6fG-tD-nqx"/>
+                        <outlet property="switchCameraButton" destination="2Ij-gr-hUB" id="NbB-VZ-Z77"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubT-co-eZ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,4 +69,7 @@
             <point key="canvasLocation" x="137" y="799"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="switch_camera" width="100" height="100"/>
+    </resources>
 </document>

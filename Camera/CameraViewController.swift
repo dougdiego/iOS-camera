@@ -19,10 +19,14 @@ private enum AVCamManualSetupResult: Int {
 private var SessionRunningContext = 0
 
 @objc(CameraViewController)
-class CameraViewController: UIViewController {
+open class CameraViewController: UIViewController {
+    
+    public var showCameraButton = true
+    public var showSwitchCameraButton = false
     
     @IBOutlet var previewView: CameraPreviewView!
     @IBOutlet weak var photoButton: UIButton!
+    @IBOutlet weak var switchCameraButton: UIButton!
     
     var session: AVCaptureSession!
     var stillImageOutput: AVCapturePhotoOutput!
@@ -37,8 +41,16 @@ class CameraViewController: UIViewController {
     
     private var inProgressPhotoCaptureDelegates: [Int64: CameraPhotoCaptureDelegateType] = [:]
     
-    override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !showCameraButton {
+            photoButton.isHidden = true
+        }
+        
+        if !showSwitchCameraButton {
+            switchCameraButton.isHidden = true
+        }
         
         // Disable UI. The UI is enabled if and only if the session starts running.
         self.photoButton.isEnabled = false
@@ -59,7 +71,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.sessionQueue.async {
@@ -98,7 +110,7 @@ class CameraViewController: UIViewController {
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         self.sessionQueue.async {
             if self.setupResult == .success {
                 self.session.stopRunning()
@@ -109,7 +121,7 @@ class CameraViewController: UIViewController {
         super.viewDidDisappear(animated)
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
         let deviceOrientation = UIDevice.current.orientation
@@ -120,17 +132,17 @@ class CameraViewController: UIViewController {
         }
     }
     
-    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+    open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.all
     }
     
-    override var shouldAutorotate : Bool {
+    open override var shouldAutorotate : Bool {
         // Disable autorotation of the interface when recording is in progress.
         //return !(self.movieFileOutput?.isRecording ?? false);
         return true
     }
     
-    override var prefersStatusBarHidden : Bool {
+    open override var prefersStatusBarHidden : Bool {
         return true
     }
     
@@ -220,6 +232,65 @@ class CameraViewController: UIViewController {
         return photoSettings
     }
     
+    // http://stackoverflow.com/questions/20864372/switch-cameras-with-avcapturesession
+    @IBAction func switchCamera(_ sender: Any) {
+         NSLog("capture photo")
+
+        //Change camera source
+
+            self.session.beginConfiguration()
+            
+            //Remove existing input
+            guard let currentCameraInput: AVCaptureInput = session.inputs.first as? AVCaptureInput else {
+                return
+            }
+            
+            self.session.removeInput(currentCameraInput)
+            
+            //Get new input
+            var newCamera: AVCaptureDevice! = nil
+            if let input = currentCameraInput as? AVCaptureDeviceInput {
+                if (input.device.position == .back) {
+                    newCamera = cameraWithPosition(position: .front)
+                } else {
+                    newCamera = cameraWithPosition(position: .back)
+                }
+            }
+            
+            //Add input to session
+            var err: NSError?
+            var newVideoInput: AVCaptureDeviceInput!
+            do {
+                newVideoInput = try AVCaptureDeviceInput(device: newCamera)
+            } catch let err1 as NSError {
+                err = err1
+                newVideoInput = nil
+            }
+            
+            if newVideoInput == nil || err != nil {
+                print("Error creating capture device input: \(err?.localizedDescription)")
+            } else {
+                self.session.addInput(newVideoInput)
+            }
+            
+            //Commit all the configuration changes at once
+            self.session.commitConfiguration()
+        
+    }
+    
+    // Find a camera with the specified AVCaptureDevicePosition, returning nil if one is not found
+    func cameraWithPosition(position: AVCaptureDevicePosition) -> AVCaptureDevice? {
+        if let discoverySession = AVCaptureDeviceDiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaTypeVideo, position: .unspecified) {
+            for device in discoverySession.devices {
+                if device.position == position {
+                    return device
+                }
+            }
+        }
+        
+        return nil
+    }
+    
     @IBAction func capturePhoto(_: Any) {
         NSLog("capture photo")
         
@@ -272,7 +343,7 @@ class CameraViewController: UIViewController {
     }
     
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         let oldValue = change![.oldKey]
         let newValue = change![.newKey]
         
